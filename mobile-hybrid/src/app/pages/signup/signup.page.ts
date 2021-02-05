@@ -44,7 +44,6 @@ export class SignupPage implements OnInit {
     if (this.validateInputs()) {
       this.authService.signup(this.postData).subscribe(
         (res: any) => {
-          console.log(res)
           if (res.data.user) {
             // Storing the User data.
             this.storageService
