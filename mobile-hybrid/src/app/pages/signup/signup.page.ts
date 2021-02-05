@@ -12,6 +12,7 @@ import { ToastService } from './../../services/toast.service';
 })
 export class SignupPage implements OnInit {
   postData = {
+    name: '',
     userName: '',
     email: '',
     password: ''
