@@ -1,0 +1,7 @@
+{
+  "name": "mobile-hybrid",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
