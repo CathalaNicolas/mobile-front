@@ -1,25 +1,22 @@
-<ion-tabs>
+<ion-header>
+  <ion-toolbar>
+    <ion-fab-button slot="end" (click)="logout()">
+      <ion-icon name="power"></ion-icon>
+    </ion-fab-button>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-tab-bar slot="bottom" color="dark">
-    <ion-tab-button tab="feed">
-      <ion-icon name="paper"></ion-icon>
-      <ion-label>Feed</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="messages">
-      <ion-icon name="send"></ion-icon>
-      <ion-label>Messages</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="notifications">
-      <ion-icon name="notifications"></ion-icon>
-      <ion-label>Contact</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="settings">
-      <ion-icon name="cog"></ion-icon>
-      <ion-label>Settings</ion-label>
-    </ion-tab-button>
-
-  </ion-tab-bar>
-</ion-tabs>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+        <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="addPhotoToGallery()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

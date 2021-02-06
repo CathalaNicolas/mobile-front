@@ -26,7 +26,6 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   validateInputs() {
-    console.log(this.postData);
     let email = this.postData.email.trim();
     let password = this.postData.password.trim();
     return (
@@ -41,12 +40,10 @@ export class LoginPage implements OnInit {
     if (this.validateInputs()) {
       this.authService.login(this.postData).subscribe(
         (res: any) => {
-          
-          console.log(res)
           if (res.data.user) {
             // Storing the User data.
             this.storageService.store(AuthConstants.AUTH, res.data.user);
-            this.router.navigate(['home/feed']);
+            this.router.navigate(['home/']);
           } else {
             this.toastService.presentToast('Incorrect username and password.');
           }

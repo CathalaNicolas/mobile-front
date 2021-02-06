@@ -1,7 +1,8 @@
 {
   "name": "mobile-hybrid",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

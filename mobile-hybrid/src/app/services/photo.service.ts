@@ -16,7 +16,7 @@ export class PhotoService {
   private PHOTO_STORAGE: string = "photos";
   private platform: Platform;
 
-   constructor(platform: Platform) {
+  constructor(platform: Platform) {
     this.platform = platform;
   }
 
@@ -71,7 +71,7 @@ export class PhotoService {
     // Retrieve cached photo array data
     const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photoList.value) || [];
-  
+
     // Easiest way to detect when running on the web:
     // “when the platform is NOT hybrid, do this”
     if (!this.platform.is('hybrid')) {
@@ -79,16 +79,34 @@ export class PhotoService {
       for (let photo of this.photos) {
         // Read each saved photo's data from the Filesystem
         const readFile = await Filesystem.readFile({
-            path: photo.filepath,
-            directory: FilesystemDirectory.Data
+          path: photo.filepath,
+          directory: FilesystemDirectory.Data
         });
-  
+
         // Web platform only: Load the photo as base64 data
         photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
       }
     }
   }
+  public async deletePicture(photo: Photo, position: number) {
+    // Remove this photo from the Photos reference data array
+    this.photos.splice(position, 1);
 
+    // Update photos array cache by overwriting the existing photo array
+    Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
+
+    // delete photo file from filesystem
+    const filename = photo.filepath
+      .substr(photo.filepath.lastIndexOf('/') + 1);
+
+    await Filesystem.deleteFile({
+      path: filename,
+      directory: FilesystemDirectory.Data
+    });
+  }
   private async readAsBase64(cameraPhoto: CameraPhoto) {
     // "hybrid" will detect Cordova or Capacitor
     if (this.platform.is('hybrid')) {
@@ -96,14 +114,14 @@ export class PhotoService {
       const file = await Filesystem.readFile({
         path: cameraPhoto.path
       });
-  
+
       return file.data;
     }
     else {
       // Fetch the photo, read as a blob, then convert to base64 format
       const response = await fetch(cameraPhoto.webPath);
       const blob = await response.blob();
-  
+
       return await this.convertBlobToBase64(blob) as string;
     }
   }

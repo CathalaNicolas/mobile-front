@@ -6,8 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./slides.component.scss']
 })
 export class SlidesComponent {
-  slideOpts = {
-    speed: 400
-  };
   constructor() { }
 }
